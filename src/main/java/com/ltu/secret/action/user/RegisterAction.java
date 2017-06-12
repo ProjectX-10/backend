@@ -56,7 +56,7 @@ public class RegisterAction extends AbstractSecretAction {
 
     @Override
 	public String handle(JsonObject request, Context lambdaContext) throws BadRequestException, InternalErrorException {
-        logger = lambdaContext.getLogger();
+        //logger = lambdaContext.getLogger();
         
         RegisterUserRequest input = getGson().fromJson(request, RegisterUserRequest.class);
         if (input == null ||

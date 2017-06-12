@@ -18,7 +18,6 @@ import com.amazonaws.services.cognitoidentity.model.GetCredentialsForIdentityRes
 import com.amazonaws.services.cognitoidentity.model.GetOpenIdTokenForDeveloperIdentityRequest;
 import com.amazonaws.services.cognitoidentity.model.GetOpenIdTokenForDeveloperIdentityResult;
 import com.ltu.secret.configuration.CognitoConfiguration;
-import com.ltu.secret.configuration.CredentialConfiguration;
 import com.ltu.secret.exception.AuthorizationException;
 import com.ltu.secret.model.user.User;
 import com.ltu.secret.model.user.UserCredentials;
@@ -37,8 +36,8 @@ public class CognitoCredentialsProvider implements CredentialsProvider {
     private static CognitoCredentialsProvider instance = null;
 
     /** The identity client. */
-    private static AmazonCognitoIdentityClient identityClient = new AmazonCognitoIdentityClient(CredentialConfiguration.getAwsCredentials());
-    //private static AmazonCognitoIdentityClient identityClient = new AmazonCognitoIdentityClient();
+    //private static AmazonCognitoIdentityClient identityClient = new AmazonCognitoIdentityClient(CredentialConfiguration.getAwsCredentials());
+    private static AmazonCognitoIdentityClient identityClient = new AmazonCognitoIdentityClient();
 
     /**
      * Gets the initialized instance of the CognitoCredentialsProvider. This provider should be accessed through the

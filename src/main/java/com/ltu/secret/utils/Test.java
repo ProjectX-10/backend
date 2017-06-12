@@ -3,8 +3,6 @@
  */
 package com.ltu.secret.utils;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import org.json.JSONObject;
@@ -32,7 +30,7 @@ public class Test {
 		
 		System.out.println(Calendar.getInstance().getTime().getTime());
 		
-		DateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+		//DateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 		
 	}
 

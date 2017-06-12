@@ -63,6 +63,12 @@ public class RequestRouter {
 
 		String actionClass = inputObj.get("action").getAsString();
 		SecretAction action;
+		
+		try {
+			action = SecretAction.class.cast(Class.forName(actionClass).newInstance());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		try {
 			action = SecretAction.class.cast(Class.forName(actionClass).newInstance());
