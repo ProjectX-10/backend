@@ -13,9 +13,11 @@
 
 package com.ltu.secret.action;
 
+import com.fatboyindustrial.gsonjodatime.Converters;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+// TODO: Auto-generated Javadoc
 /**
  * Abstract class implementing the SecretAction interface. This class is used to declare utility method
  * shared with all Action implementations
@@ -23,8 +25,10 @@ import com.google.gson.GsonBuilder;
  * created on May 19, 2017
  */
 public abstract class AbstractSecretAction implements SecretAction {
+    
     /**
-     * Returns an initialized Gson object with the default configuration
+     * Returns an initialized Gson object with the default configuration.
+     *
      * @return An initialized Gson object
      */
     protected Gson getGson() {
@@ -33,7 +37,29 @@ public abstract class AbstractSecretAction implements SecretAction {
                 //.serializeNulls()
                 //.setDateFormat(DateFormat.LONG)
                 //.setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+        		//.setDateFormat(DateFormat.FULL, DateFormat.FULL)
+        		.setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
                 .setPrettyPrinting()
                 .create();
     }
+    
+	/**
+	 * Gets the gson date time.
+	 *
+	 * @return the gson date time
+	 */
+	protected Gson getGsonDateTime() {
+		return Converters.registerDateTime(new GsonBuilder()).create();
+	}
+    
+    /**
+     * Gets the gson exclude fields.
+     *
+     * @return the gson exclude fields
+     */
+    protected Gson getGsonExcludeFields() {
+		return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").excludeFieldsWithoutExposeAnnotation()
+				.setPrettyPrinting().create();
+    }
+    
 }
