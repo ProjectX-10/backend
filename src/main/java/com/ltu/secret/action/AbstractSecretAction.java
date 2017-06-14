@@ -17,7 +17,6 @@ import com.fatboyindustrial.gsonjodatime.Converters;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-// TODO: Auto-generated Javadoc
 /**
  * Abstract class implementing the SecretAction interface. This class is used to declare utility method
  * shared with all Action implementations
