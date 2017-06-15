@@ -19,11 +19,11 @@ package com.ltu.secret.configuration;
  */
 public class DynamoDBConfiguration {
     // TODO: Specify the name of the Users table in DynamoDB
-    public static final String USERS_TABLE_NAME = "users";
+    public static final String USERS_TABLE_NAME = "x_users";
     
     /** The Constant SECRET_TABLE_NAME. */
     // TODO: Specify the name of the Secrets table in DynamoDB
-    public static final String SECRET_TABLE_NAME = "secrets";
+    public static final String SECRET_TABLE_NAME = "x_secrets";
 
     public static final int SCAN_LIMIT = 50;
 }

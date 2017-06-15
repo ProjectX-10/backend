@@ -55,7 +55,10 @@ public class InitDao {
 		try {
 
 			deleteTable(DynamoDBConfiguration.USERS_TABLE_NAME);
+			deleteTable(DynamoDBConfiguration.SECRET_TABLE_NAME);
+			
 			createTable(DynamoDBConfiguration.USERS_TABLE_NAME, 10L, 2L, "id", "S", null, null);
+			createTable(DynamoDBConfiguration.SECRET_TABLE_NAME, 10L, 2L, "id", "S", null, null);
 
 		} catch (Exception e) {
 			e.printStackTrace();
