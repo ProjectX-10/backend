@@ -29,7 +29,8 @@ import com.ltu.secret.exception.InternalErrorException;
 /**
  * This class contains the main event handler for the Lambda function.
  * 
- * @author Uy Phu created on May 18, 2017
+ * @author Uy Phu 
+ * created on May 18, 2017
  */
 public class RequestRouter {
 
