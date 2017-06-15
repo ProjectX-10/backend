@@ -42,7 +42,9 @@ import org.joda.time.format.ISODateTimeFormat;
 
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClient;
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
 import com.amazonaws.services.simpleemail.model.Body;
 import com.amazonaws.services.simpleemail.model.Content;
 import com.amazonaws.services.simpleemail.model.Destination;
@@ -201,7 +203,10 @@ public class AppUtil {
         // using the default credential provider chain. The first place the chain looks for the credentials is in environment variables 
         // AWS_ACCESS_KEY_ID and AWS_SECRET_KEY. 
         // For more information, see http://docs.aws.amazon.com/AWSSdkDocsJava/latest/DeveloperGuide/credentials.html
+        //FIXME Needs to replace it
         AmazonSimpleEmailServiceClient client = new AmazonSimpleEmailServiceClient();
+        //AmazonSimpleEmailService client = AmazonSimpleEmailServiceClientBuilder.standard().withRegion(Regions.US_WEST_2).build();
+        //AmazonSimpleEmailService client1 = AmazonSimpleEmailServiceClientBuilder.standard().defaultClient();
            
         // Choose the AWS region of the Amazon SES endpoint you want to connect to. Note that your sandbox 
         // status, sending limits, and Amazon SES identity-related settings are specific to a given AWS 

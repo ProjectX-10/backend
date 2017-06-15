@@ -19,7 +19,8 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ltu.secret.configuration.AppConfiguration;
 import com.ltu.secret.constants.Constants;
@@ -33,8 +34,8 @@ import com.ltu.secret.exception.ErrorCodeDetail;
  */
 public class MailUtil {
 	
-	/** The log. */
-	private static Logger log = Logger.getLogger(MailUtil.class);
+	/** The logger. */
+	private static final Logger logger = LogManager.getLogger("MailUtil");
 	
 	/** The Constant FROM. */
 	static final String FROM = S3ResourceLoaderUtil.getProperty(AppConfiguration.FROM_MAIL);  // Replace with your "From" address. This address must be verified.
@@ -121,7 +122,7 @@ public class MailUtil {
 			} catch (Exception ex) {
 				//System.out.println("The email was not sent.");
 				//System.out.println("Error message: " + ex.getMessage());
-				log.error("The email was not sent." + ex.getMessage());
+				logger.error("The email was not sent." + ex.getMessage());
 				throw new CommonException(ErrorCodeDetail.ERROR_SEND_EMAIL.getMsg(), ex);
 			} finally {
 				// Close and terminate the connection.
@@ -129,7 +130,7 @@ public class MailUtil {
 			}
 		} catch (Exception e) {
 			//e.printStackTrace();
-			log.error(e.getMessage());
+			logger.error(e.getMessage());
 			throw new CommonException(ErrorCodeDetail.ERROR_SEND_EMAIL.getMsg(), e);
 		}
 		return true;
@@ -192,7 +193,7 @@ public class MailUtil {
 			} catch (Exception ex) {
 				//System.out.println("The email was not sent.");
 				//System.out.println("Error message: " + ex.getMessage());
-				log.error("The email was not sent." + ex.getMessage());
+				logger.error("The email was not sent." + ex.getMessage());
 				throw new CommonException(ErrorCodeDetail.ERROR_SEND_EMAIL.getMsg(), ex);
 			} finally {
 				// Close and terminate the connection.
@@ -200,7 +201,7 @@ public class MailUtil {
 			}
 		} catch (Exception e) {
 			//e.printStackTrace();
-			log.error(e.getMessage());
+			logger.error(e.getMessage());
 			throw new CommonException(ErrorCodeDetail.ERROR_SEND_EMAIL.getMsg(), e);
 		}
 		return true;
