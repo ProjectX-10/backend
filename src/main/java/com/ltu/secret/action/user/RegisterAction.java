@@ -39,6 +39,7 @@ import com.ltu.secret.provider.ProviderFactory;
 import com.ltu.secret.utils.AppUtil;
 import com.ltu.secret.utils.MailUtil;
 import com.ltu.secret.utils.RandomUtil;
+import com.ltu.secret.utils.S3ResourceLoaderUtil;
 
 /**
  * The Class RegisterAction.
@@ -59,6 +60,7 @@ public class RegisterAction extends AbstractSecretAction {
         //logger = lambdaContext.getLogger();
         
         RegisterUserRequest input = getGson().fromJson(request, RegisterUserRequest.class);
+        System.out.println("senderEmail:" + S3ResourceLoaderUtil.getProperty("senderEmail"));
         if (input == null ||
                 input.getEmail() == null ||
                 input.getEmail().trim().equals("")) {

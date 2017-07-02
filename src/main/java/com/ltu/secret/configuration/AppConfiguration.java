@@ -21,7 +21,7 @@ public class AppConfiguration {
 	
 
 	/** The Constant CONFIG_FILE_NAME. */
-	public static final String CONFIG_FILE_NAME = "vc.config.properties";
+	public static final String CONFIG_FILE_NAME = "config.properties";
 
 	/** The Constant BUCKET_NAME. */
 	//DEV

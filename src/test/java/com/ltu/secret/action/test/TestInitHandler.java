@@ -12,8 +12,6 @@
  */
 package com.ltu.secret.action.test;
 
-import com.ltu.secret.dao.InitDao;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -41,7 +39,7 @@ public class TestInitHandler extends TestCase {
 	 * Rigourous Test :-)
 	 */
 	public void testApp() {
-		InitDao.initTables();
+		//InitDao.initTables();
 		assertTrue(true);
 	}
 }
