@@ -14,7 +14,8 @@ package com.ltu.secret.utils;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.ltu.secret.model.user.User;
@@ -28,7 +29,7 @@ import com.ltu.secret.model.user.User;
 public class ConvertUtil {
 
 	/** The log. */
-	private static Logger log = Logger.getLogger(ConvertUtil.class);
+	private static final Logger logger = LogManager.getLogger("ConvertUtil");
 
 	/**
 	 * To user.
@@ -51,7 +52,7 @@ public class ConvertUtil {
 			user.setCreatedAt(item.get("createdAt") != null ? AppUtil.toDate(item.get("createdAt").getS()) : null);
 			user.setCognitoIdentityId(item.get("identityId") != null ? item.get("identityId").getS() : null);
 		} catch (Exception e) {
-			log.error(e.getMessage(), e.getCause());
+			logger.error(e.getMessage(), e.getCause());
 		}
 		return user;
 	}

@@ -13,7 +13,6 @@
 
 package com.ltu.secret.action;
 
-import com.fatboyindustrial.gsonjodatime.Converters;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -42,14 +41,14 @@ public abstract class AbstractSecretAction implements SecretAction {
                 .create();
     }
     
-	/**
-	 * Gets the gson date time.
-	 *
-	 * @return the gson date time
-	 */
-	protected Gson getGsonDateTime() {
-		return Converters.registerDateTime(new GsonBuilder()).create();
-	}
+//	/**
+//	 * Gets the gson date time.
+//	 *
+//	 * @return the gson date time
+//	 */
+//	protected Gson getGsonDateTime() {
+//		return Converters.registerDateTime(new GsonBuilder()).create();
+//	}
     
     /**
      * Gets the gson exclude fields.

@@ -16,7 +16,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ltu.secret.configuration.ExceptionMessages;
 import com.ltu.secret.constants.Constants;
@@ -30,7 +31,7 @@ import com.ltu.secret.exception.InternalErrorException;
 public class NotificationUtil {
 
 	/** The log. */
-	private static Logger LOG = Logger.getLogger(NotificationUtil.class);
+	private static final Logger logger = LogManager.getLogger("NotificationUtil");
 
 	/** The android api key. */
 	private static String ANDROID_API_KEY = "key=AIzaSyDPahGQaJMgQpeRjUuGYAX2vbi0lwgq4kE";
@@ -120,7 +121,7 @@ public class NotificationUtil {
 			os.flush();
 
 			if (conn.getResponseCode() != 200) {
-				LOG.error("Failed : HTTP error code : " + conn.getResponseCode());
+				logger.error("Failed : HTTP error code : " + conn.getResponseCode());
 				throw new InternalErrorException(ExceptionMessages.EX_PUSH_NOTIFICATION);
 			}
 
@@ -134,7 +135,7 @@ public class NotificationUtil {
 
 			conn.disconnect();
 		} catch (Exception e) {
-			LOG.error(e.getMessage(), e.getCause());
+			logger.error(e.getMessage(), e.getCause());
 			throw new InternalErrorException(ExceptionMessages.EX_PUSH_NOTIFICATION);
 		}
 

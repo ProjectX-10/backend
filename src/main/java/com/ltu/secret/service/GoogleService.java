@@ -16,7 +16,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 import com.ltu.secret.configuration.ExceptionMessages;
 import com.ltu.secret.constants.Constants;
@@ -30,7 +30,7 @@ import com.ltu.secret.model.user.User;
 public class GoogleService {
 	
 	/** The log. */
-	private final Logger log = Logger.getLogger(GoogleService.class);
+	//private final Logger log = Logger.getLogger(GoogleService.class);
 	
 	/** The instance. */
 	private static GoogleService instance = null;
@@ -78,7 +78,7 @@ public class GoogleService {
 			in.close();
 			
 		} catch (Exception e) {
-			log.error(e.getMessage(), e.getCause());
+			//log.error(e.getMessage(), e.getCause());
 			throw new BadRequestException(ExceptionMessages.EX_AUTHENTICATE_GOOGLE);
 		}
 		

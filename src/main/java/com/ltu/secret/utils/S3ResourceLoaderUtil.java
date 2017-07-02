@@ -16,7 +16,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ltu.secret.configuration.AppConfiguration;
 
@@ -28,7 +29,7 @@ import com.ltu.secret.configuration.AppConfiguration;
 public class S3ResourceLoaderUtil {
 	
 	/** The log. */
-	private static Logger log = Logger.getLogger(S3ResourceLoaderUtil.class);
+	private static final Logger logger = LogManager.getLogger("S3ResourceLoaderUtil");
 	
 	/** The props. */
 	public static Properties props = new Properties();
@@ -52,7 +53,7 @@ public class S3ResourceLoaderUtil {
  
 			inputStream.close();
 		} catch (Exception e) {
-			log.error(e.getMessage(), e.getCause());
+			logger.error(e.getMessage(), e.getCause());
 		} 
 	}
 	

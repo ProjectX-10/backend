@@ -12,7 +12,7 @@
  */
 package com.ltu.secret.service;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 import com.ltu.secret.configuration.ExceptionMessages;
 import com.ltu.secret.exception.BadRequestException;
@@ -31,7 +31,7 @@ import com.restfb.Version;
 public class FacebookService {
 
 	/** The log. */
-	private final Logger log = Logger.getLogger(FacebookService.class);
+	//private final Logger log = Logger.getLogger(FacebookService.class);
 	
 	/** The instance. */
 	private static FacebookService instance = null;
@@ -64,7 +64,7 @@ public class FacebookService {
 			com.restfb.types.User user = facebookClient.fetchObject("me", com.restfb.types.User.class, Parameter.with("fields", "email,first_name,last_name,gender"));
 			return UserHelper.convertToUser(user);
 		} catch (Exception e) {
-			log.error(e.getMessage(), e.getCause());
+			//log.error(e.getMessage(), e.getCause());
 			throw new BadRequestException(ExceptionMessages.EX_AUTHENTICATE_FACEBOOK);
 		}
 	}
