@@ -21,6 +21,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIgnore;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
 import com.ltu.secret.configuration.DynamoDBConfiguration;
 
@@ -41,6 +42,7 @@ public class User implements Comparable<User>{
 	/** The email. */
 	@DynamoDBIndexHashKey
 	@DynamoDBAttribute(attributeName = "email")
+	@JsonProperty(value="email", required=true)
 	@Expose
 	private String email;
 
@@ -84,16 +86,6 @@ public class User implements Comparable<User>{
 	@Expose
 	private Date createdAt;
 	
-	/** The lng. */
-	@DynamoDBAttribute(attributeName = "lng")
-	@Expose
-	private double lng;
-	
-	/** The lat. */
-	@DynamoDBAttribute(attributeName = "lat")
-	@Expose
-	private double lat;
-
 	/**
 	 * Instantiates a new user.
 	 */
@@ -326,42 +318,6 @@ public class User implements Comparable<User>{
     }
     
 	/**
-	 * Gets the lng.
-	 *
-	 * @return the lng
-	 */
-	public double getLng() {
-		return lng;
-	}
-
-	/**
-	 * Sets the lng.
-	 *
-	 * @param lng the new lng
-	 */
-	public void setLng(double lng) {
-		this.lng = lng;
-	}
-
-	/**
-	 * Gets the lat.
-	 *
-	 * @return the lat
-	 */
-	public double getLat() {
-		return lat;
-	}
-
-	/**
-	 * Sets the lat.
-	 *
-	 * @param lat the new lat
-	 */
-	public void setLat(double lat) {
-		this.lat = lat;
-	}
-
-	/**
 	 * Instantiates a new user.
 	 *
 	 * @param id the id
@@ -394,8 +350,8 @@ public class User implements Comparable<User>{
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", email=" + email + ", password=" + password + ", salt=" + salt + ", displayName="
-				+ displayName + ", imageUrl=" + imageUrl + ", type=" + type + ", activateCode=" + activateCode + ", status="
-				+ status + ", identity=" + identity + ", createdAt=" + createdAt + ", lng=" + lng + ", lat=" + lat + "]";
+				+ displayName + ", imageUrl=" + imageUrl + ", type=" + type + ", activateCode=" + activateCode
+				+ ", status=" + status + ", identity=" + identity + ", createdAt=" + createdAt + "]";
 	}
 
 	@Override

@@ -76,6 +76,11 @@
 		    <artifactId>aws-lambda-java-events</artifactId>
 		    <version>1.3.0</version>
 		</dependency>
+		<dependency>
+		    <groupId>pl.zientarski</groupId>
+		    <artifactId>JSONschema4-mapper</artifactId>
+		    <version>0.0.2-SNAPSHOT</version>
+		</dependency>
     </dependencies>
 
     <build>

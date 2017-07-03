@@ -26,10 +26,6 @@ public class LoginUserRequest {
     /** The password. */
     private String password;
     
-    /** The phone id. */
-    private String phoneId;
-    //private String pushToken;
-
     /**
      * Gets the email.
      *
@@ -66,30 +62,4 @@ public class LoginUserRequest {
         this.password = password;
     }
 
-	/**
-	 * Gets the phone id.
-	 *
-	 * @return the phone id
-	 */
-	public String getPhoneId() {
-		return phoneId;
-	}
-
-	/**
-	 * Sets the phone id.
-	 *
-	 * @param phoneId the new phone id
-	 */
-	public void setPhoneId(String phoneId) {
-		this.phoneId = phoneId;
-	}
-
-//	public String getPushToken() {
-//		return pushToken;
-//	}
-//
-//	public void setPushToken(String pushToken) {
-//		this.pushToken = pushToken;
-//	}
-	
 }
