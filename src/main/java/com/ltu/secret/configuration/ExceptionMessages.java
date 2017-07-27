@@ -81,6 +81,7 @@ public class ExceptionMessages {
     //User
     public static final String EX_PARAM_EMAIL_NOT_EXIST_OR_ACTIVATED = "Email not exist or activated";
     public static final String EX_PARAM_DISPLAYED_NAME_REQUIRED = "DisplayedName required";
+    public static final String EX_PARAM_SECRET_KEY_REQUIRED = "Secret Key required";
     public static final String EX_PARAM_TOKEN_REQUIRED = "Token required";
     
     public static final String EX_PARAM_LOGIN_WITH_FACEBOOK_OR_GOOGLE = "User login with facebook or google";
