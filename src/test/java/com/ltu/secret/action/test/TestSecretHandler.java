@@ -18,7 +18,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-public class TestUserHandler extends TestCase {
+public class TestSecretHandler extends TestCase {
 
 	/**
 	 * Create the test case
@@ -26,7 +26,7 @@ public class TestUserHandler extends TestCase {
 	 * @param testName
 	 *            name of the test case
 	 */
-	public TestUserHandler(String testName) {
+	public TestSecretHandler(String testName) {
 		super(testName);
 	}
 
@@ -34,7 +34,7 @@ public class TestUserHandler extends TestCase {
 	 * @return the suite of tests being tested
 	 */
 	public static Test suite() {
-		return new TestSuite(TestUserHandler.class);
+		return new TestSuite(TestSecretHandler.class);
 	}
 	
 	/**
@@ -56,7 +56,7 @@ public class TestUserHandler extends TestCase {
 	public void testApp() {
 		
 		Context context = createContext();
-		TestUtils.callAPI(context, "user.input.json", "src/test/java/com/ltu/secret/action/test/user.output.json");
+		TestUtils.callAPI(context, "secret.input.json", "src/test/java/com/ltu/secret/action/test/output/secret.output.json");
 		
 		assertTrue(true);
 	}

@@ -12,6 +12,8 @@
  */
 package com.ltu.secret.dao.factory;
 
+import com.ltu.secret.model.secret.DDBSecretDAO;
+import com.ltu.secret.model.secret.SecretDAO;
 import com.ltu.secret.model.user.DDBUserDAO;
 import com.ltu.secret.model.user.UserDAO;
 
@@ -22,8 +24,12 @@ import com.ltu.secret.model.user.UserDAO;
  * created on May 20, 2017
  */
 public class DAOFactory {
+    
     /**
      * Contains the implementations of the DAO objects. By default we only have a DynamoDB implementation
+     *
+     * @author FPT LA
+     * @date Nov 19, 2017
      */
     public enum DAOType {
         
@@ -51,6 +57,32 @@ public class DAOFactory {
         switch (daoType) {
             case DynamoDB:
                 dao = DDBUserDAO.getInstance();
+                break;
+        }
+
+        return dao;
+    }
+    
+    /**
+     * Gets the secret DAO.
+     *
+     * @return the secret DAO
+     */
+    public static SecretDAO getSecretDAO() {
+        return getSecretDAO(DAOType.DynamoDB);
+    }
+    
+    /**
+     * Gets the secret DAO.
+     *
+     * @param daoType the dao type
+     * @return the secret DAO
+     */
+    public static SecretDAO getSecretDAO(DAOType daoType) {
+        SecretDAO dao = null;
+        switch (daoType) {
+            case DynamoDB:
+                dao = DDBSecretDAO.getInstance();
                 break;
         }
 

@@ -10,20 +10,27 @@
  * OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions
  * and limitations under the License.
  */
-package com.ltu.secret.configuration;
+package com.ltu.secret.model.action.secret;
 
 /**
- * Configuration parameters for the DynamoDB DAO objects
- * @author uy phu
- * created on May 19, 2017
+ * The Class InsertSecretRequest.
+ * @author uyphu
+ * created on May 20, 2017
  */
-public class DynamoDBConfiguration {
-    // TODO: Specify the name of the Users table in DynamoDB
-    public static final String USERS_TABLE_NAME = "x_users";
-    
-    /** The Constant SECRET_TABLE_NAME. */
-    // TODO: Specify the name of the Secrets table in DynamoDB
-    public static final String SECRET_TABLE_NAME = "x_secrets";
-    
-    public static final int SCAN_LIMIT = 50;
+public class DeleteSecretRequest {
+
+	private String id;
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public DeleteSecretRequest() {
+		
+	}
+	
 }
