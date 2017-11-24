@@ -65,8 +65,7 @@ public class ConvertUtil {
 			secret.setUserId(item.get("userId") != null ? item.get("userId").getS() : null);
 			secret.setDomain(item.get("domain") != null ? item.get("domain").getS() : null);
 			secret.setUsername(item.get("username") != null ? item.get("username").getS() : null);
-			secret.setPassword(item.get("password") != null ? item.get("password").getB() : null);
-			secret.setSalt(item.get("salt") != null ? item.get("salt").getB() : null);
+			secret.setPassword(item.get("password") != null ? item.get("password").getS() : null);
 			secret.setNote(item.get("note") != null ? item.get("note").getS() : null);
 			secret.setCreatedAt(item.get("createdAt") != null ? AppUtil.toDate(item.get("createdAt").getS()) : null);
 		} catch (Exception e) {

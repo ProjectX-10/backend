@@ -12,9 +12,17 @@
  */
 package com.ltu.secret.action.test;
 
-import com.amazonaws.services.lambda.runtime.Context;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-import junit.framework.Test;
+import org.apache.commons.io.IOUtils;
+
+import com.amazonaws.services.lambda.runtime.Context;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
@@ -33,7 +41,7 @@ public class TestSecretHandler extends TestCase {
 	/**
 	 * @return the suite of tests being tested
 	 */
-	public static Test suite() {
+	public static junit.framework.Test suite() {
 		return new TestSuite(TestSecretHandler.class);
 	}
 	
@@ -51,13 +59,100 @@ public class TestSecretHandler extends TestCase {
 	}
 
 	/**
-	 * Rigourous Test :-)
+	 * Test app.
 	 */
-	public void testApp() {
+//	public void stestInsert() {
+//		System.out.println("testInsert calling...");
+//		Context context = createContext();
+//		String output = "src/test/java/com/ltu/secret/action/test/secret.output.json";
+//		TestUtils.callAPI(context, "secret.input.json", output);
+//		
+//		assertTrue(true);
+//	}
+	
+//	public void testBuildGet() {
+//		
+//		System.out.println("testBuildGet calling...");
+//		buildGetRequest("secret.output.json", "src/test/java/com/ltu/secret/action/test/secret.get.output.json");
+//		assertTrue(true);
+//	}
+	
+//	public void testGet() {
+//		
+//		System.out.println("testGet calling...");
+//		Context context = createContext();
+//		TestUtils.callAPI(context, "secret.get.output.json", "src/test/java/com/ltu/secret/action/test/secret.output.json");
+//		assertTrue(true);
+//	}
+	
+//	public void testBuildDelete() {
+//
+//		System.out.println("testBuildDelete calling...");
+//		buildDeleteRequest("secret.output.json", "src/test/java/com/ltu/secret/action/test/delete.get.output.json");
+//		assertTrue(true);
+//	}
+	
+	public void testDelete() {
 		
+		System.out.println("testDelete calling...");
 		Context context = createContext();
-		TestUtils.callAPI(context, "secret.input.json", "src/test/java/com/ltu/secret/action/test/output/secret.output.json");
-		
+		TestUtils.callAPI(context, "delete.get.output.json", "src/test/java/com/ltu/secret/action/test/secret.output.json");
 		assertTrue(true);
+	}
+	
+	
+	
+	/**
+	 * Builds the get request.
+	 *
+	 * @param inputFile the input file
+	 * @param outputFile the output file
+	 */
+	private void buildGetRequest(String inputFile, String outputFile) {
+		JsonParser parser = new JsonParser();
+		JsonObject inputObj;
+		try {
+			InputStream request = TestUtils.class.getResourceAsStream(inputFile);
+			inputObj = parser.parse(IOUtils.toString(request)).getAsJsonObject();
+			StringBuilder output = new StringBuilder();
+			output.append("{");
+			output.append("\"action\":\"com.ltu.secret.action.secret.GetAction\",");
+			output.append("\"body\":{");
+			JsonObject item = inputObj.get("item").getAsJsonObject();
+			output.append("\"id\":\"" + item.get("id").getAsString()+"\"");
+			output.append("}");
+			output.append("}");
+			OutputStream response = new FileOutputStream(outputFile);
+			IOUtils.write(output, response);
+			
+			response.close();
+			response.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void buildDeleteRequest(String inputFile, String outputFile) {
+		JsonParser parser = new JsonParser();
+		JsonObject inputObj;
+		try {
+			InputStream request = TestUtils.class.getResourceAsStream(inputFile);
+			inputObj = parser.parse(IOUtils.toString(request)).getAsJsonObject();
+			StringBuilder output = new StringBuilder();
+			output.append("{");
+			output.append("\"action\":\"com.ltu.secret.action.secret.DeleteAction\",");
+			output.append("\"body\":{");
+			JsonObject item = inputObj.get("item").getAsJsonObject();
+			output.append("\"id\":\"" + item.get("id").getAsString()+"\"");
+			output.append("}");
+			output.append("}");
+			OutputStream response = new FileOutputStream(outputFile);
+			IOUtils.write(output, response);
+			response.flush();
+			response.close();
+			request.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

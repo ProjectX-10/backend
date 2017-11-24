@@ -12,10 +12,6 @@
  */
 package com.ltu.secret.action.secret;
 
-import java.nio.ByteBuffer;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.google.gson.JsonObject;
@@ -25,7 +21,6 @@ import com.ltu.secret.dao.factory.DAOFactory;
 import com.ltu.secret.exception.BadRequestException;
 import com.ltu.secret.exception.DAOException;
 import com.ltu.secret.exception.InternalErrorException;
-import com.ltu.secret.helper.PasswordHelper;
 import com.ltu.secret.model.action.secret.SecretResponse;
 import com.ltu.secret.model.action.secret.UpdateSecretRequest;
 import com.ltu.secret.model.secret.Secret;
@@ -67,20 +62,8 @@ public class UpdateAction extends AbstractSecretAction{
         updateSecret = dao.find(input.getId());
         
         try {
-            byte[] salt = PasswordHelper.generateSalt();
-            byte[] encryptedPassword = PasswordHelper.getEncryptedPassword(input.getPassword(), salt);
-            updateSecret.setPassword(ByteBuffer.wrap(encryptedPassword));
-            updateSecret.setSalt(ByteBuffer.wrap(salt));
-        } catch (final NoSuchAlgorithmException e) {
-            logger.log("No algrithm found for password encryption\n" + e.getMessage());
-            throw new InternalErrorException(ExceptionMessages.EX_PWD_SALT);
-        } catch (final InvalidKeySpecException e) {
-            logger.log("No KeySpec found for password encryption\n" + e.getMessage());
-            throw new InternalErrorException(ExceptionMessages.EX_PWD_ENCRYPT);
-        }
-        
-        try {
             updateSecret.setNote(input.getNote());
+            updateSecret.setPassword(input.getPassword());
         	updateSecret = dao.update(updateSecret);
         } catch (final DAOException e) {
             logger.log("Error while creating new device\n" + e.getMessage());

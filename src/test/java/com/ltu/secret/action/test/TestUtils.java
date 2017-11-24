@@ -77,11 +77,16 @@ public class TestUtils {
 			OutputStream response = new FileOutputStream(output);
 			RequestRouter.lambdaHandler(request, response, context);
 			
+			response.flush();
+			response.close();
+			request.close();
 		} catch (BadRequestException e) {
 			e.printStackTrace();
 		} catch (InternalErrorException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		System.out.println(iso8601Format.format(Calendar.getInstance().getTime()));
