@@ -23,11 +23,13 @@ public class CognitoConfiguration {
     
     /** The Constant IDENTITY_POOL_ID. */
     // TODO: Specify the identity pool id
-    public static final String IDENTITY_POOL_ID = "us-east-1:efa41743-090e-4485-bdcf-8c1e17513107";
+    public static final String IDENTITY_POOL_ID = "us-east-1:4d69d933-d359-4774-bec0-fd1af7fdf642";
+	//public static final String IDENTITY_POOL_ID = "us-east-1:d7ab2c78-2b95-4623-8102-05e8328eb07e";
     
     /** The Constant CUSTOM_PROVIDER_NAME. */
     // TODO: Specify the custom provider name used by the identity pool
     public static final String CUSTOM_PROVIDER_NAME = "com.ltu.secret";
+	//public static final String CUSTOM_PROVIDER_NAME = "com.ltu.fm";
 
     /** The Constant COGNITO_PROVIDER_NAME. */
     // This should not be changed, it is a default value for Cognito.

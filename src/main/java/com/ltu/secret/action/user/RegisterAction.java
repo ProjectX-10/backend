@@ -25,7 +25,6 @@ import com.ltu.secret.constants.Constants;
 import com.ltu.secret.dao.factory.DAOFactory;
 import com.ltu.secret.exception.AuthorizationException;
 import com.ltu.secret.exception.BadRequestException;
-import com.ltu.secret.exception.CommonException;
 import com.ltu.secret.exception.DAOException;
 import com.ltu.secret.exception.InternalErrorException;
 import com.ltu.secret.helper.PasswordHelper;
@@ -37,9 +36,7 @@ import com.ltu.secret.model.user.UserIdentity;
 import com.ltu.secret.provider.CredentialsProvider;
 import com.ltu.secret.provider.ProviderFactory;
 import com.ltu.secret.utils.AppUtil;
-import com.ltu.secret.utils.MailUtil;
 import com.ltu.secret.utils.RandomUtil;
-import com.ltu.secret.utils.S3ResourceLoaderUtil;
 
 /**
  * The Class RegisterAction.
@@ -57,10 +54,11 @@ public class RegisterAction extends AbstractSecretAction {
 
     @Override
 	public String handle(JsonObject request, Context lambdaContext) throws BadRequestException, InternalErrorException {
-        //logger = lambdaContext.getLogger();
+        logger = lambdaContext.getLogger();
         
         RegisterUserRequest input = getGson().fromJson(request, RegisterUserRequest.class);
-        System.out.println("senderEmail:" + S3ResourceLoaderUtil.getProperty("senderEmail"));
+        //System.out.println("senderEmail:" + S3ResourceLoaderUtil.getProperty("senderEmail"));
+        logger.log("RegisterAction calling ... ");
         if (input == null ||
                 input.getEmail() == null ||
                 input.getEmail().trim().equals("")) {

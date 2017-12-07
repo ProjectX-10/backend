@@ -12,16 +12,7 @@
  */
 package com.ltu.secret.action.test;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import org.apache.commons.io.IOUtils;
-
 import com.amazonaws.services.lambda.runtime.Context;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -67,29 +58,29 @@ public class TestUserHandler extends TestCase {
 		Context context = createContext();
 		String output = "src/test/java/com/ltu/secret/action/test/user.output.json";
 		TestUtils.callAPI(context, "user.input.json", "src/test/java/com/ltu/secret/action/test/user.output.json");
-		buildGetRequest(output, "src/test/java/com/ltu/secret/action/test/user.get.output.json");
+		//buildGetRequest(output, "src/test/java/com/ltu/secret/action/test/user.get.output.json");
 		assertTrue(true);
 	}
 	
-	private void buildGetRequest(String inputFile, String outputFile) {
-		JsonParser parser = new JsonParser();
-		JsonObject inputObj;
-		try {
-			InputStream request = TestUtils.class.getResourceAsStream(inputFile);
-			inputObj = parser.parse(IOUtils.toString(request)).getAsJsonObject();
-			StringBuilder output = new StringBuilder(); 
-			output.append("{");
-			output.append("\"action\":\"com.ltu.secret.action.secret.GetAction\",");
-			output.append("\"body\":{");
-			output.append("\"id\":"+inputObj.get("id").getAsString());
-			output.append("}");
-			output.append("}");
-			OutputStream response = new FileOutputStream(outputFile);
-			IOUtils.write(output, response);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		
-	}
+//	private void buildGetRequest(String inputFile, String outputFile) {
+//		JsonParse parser = new JsonParser();
+//		JsonObject inputObj;
+//		try {
+//			InputStream request = TestUtils.class.getResourceAsStream(inputFile);
+//			inputObj = parser.parse(IOUtils.toString(request)).getAsJsonObject();
+//			StringBuilder output = new StringBuilder(); 
+//			output.append("{");
+//			output.append("\"action\":\"com.ltu.secret.action.secret.GetAction\",");
+//			output.append("\"body\":{");
+//			output.append("\"id\":"+inputObj.get("id").getAsString());
+//			output.append("}");
+//			output.append("}");
+//			OutputStream response = new FileOutputStream(outputFile);
+//			IOUtils.write(output, response);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		
+//	}
 }
