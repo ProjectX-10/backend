@@ -96,7 +96,8 @@ public class TestSecretHandler extends TestCase {
 		
 		System.out.println("testDelete calling...");
 		Context context = createContext();
-		TestUtils.callAPI(context, "delete.get.output.json", "src/test/java/com/ltu/secret/action/test/secret.output.json");
+		//TestUtils.callAPI(context, "delete.get.output.json", "src/test/java/com/ltu/secret/action/test/secret.output.json");
+		TestUtils.callAPI(context, "search.input.json", "src/test/java/com/ltu/secret/action/test/search.output.json");
 		assertTrue(true);
 	}
 	
