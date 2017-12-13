@@ -73,7 +73,7 @@ public class InsertAction extends AbstractSecretAction {
         newSecret.setUserId(input.getUserId());
         newSecret.setDomain(input.getDomain());
         newSecret.setUsername(input.getUsername());
-        newSecret.setPassword(input.getUsername());
+        newSecret.setPassword(input.getPassword());
         newSecret.setNote(input.getNote());
         try {
         	newSecret = dao.insert(newSecret);
