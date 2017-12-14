@@ -81,7 +81,7 @@ public class User implements Comparable<User>{
 	/** The status. */
 	@DynamoDBAttribute(attributeName = "secretKey")
 	@Expose
-	private ByteBuffer secretKey;
+	private String secretKey;
 	
 	/** The identity. */
 	private UserIdentity identity;
@@ -268,11 +268,6 @@ public class User implements Comparable<User>{
 		return password.array();
 	}
 	
-	@DynamoDBIgnore
-	public byte[] getSecretKeyBytes() {
-		return secretKey.array();
-	}
-
 	/**
 	 * Gets the salt bytes.
 	 *
@@ -327,11 +322,21 @@ public class User implements Comparable<User>{
         this.identity.setIdentityId(cognitoIdentityId);
     }
     
-	public ByteBuffer getSecretKey() {
+	/**
+	 * Gets the secret key.
+	 *
+	 * @return the secret key
+	 */
+	public String getSecretKey() {
 		return secretKey;
 	}
 
-	public void setSecretKey(ByteBuffer secretKey) {
+	/**
+	 * Sets the secret key.
+	 *
+	 * @param secretKey the new secret key
+	 */
+	public void setSecretKey(String secretKey) {
 		this.secretKey = secretKey;
 	}
 

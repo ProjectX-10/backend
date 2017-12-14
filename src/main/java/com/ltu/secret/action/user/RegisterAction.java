@@ -101,9 +101,8 @@ public class RegisterAction extends AbstractSecretAction {
         try {
             byte[] salt = PasswordHelper.generateSalt();
             byte[] encryptedPassword = PasswordHelper.getEncryptedPassword(input.getPassword(), salt);
-            byte[] encryptedSecretKey = PasswordHelper.getEncryptedPassword(input.getSecretKey(), salt);
             newUser.setPassword(ByteBuffer.wrap(encryptedPassword));
-            newUser.setSecretKey(ByteBuffer.wrap(encryptedSecretKey));
+            newUser.setSecretKey(input.getSecretKey());
             newUser.setSalt(ByteBuffer.wrap(salt));
         } catch (final NoSuchAlgorithmException e) {
             logger.log("No algrithm found for password encryption\n" + e.getMessage());

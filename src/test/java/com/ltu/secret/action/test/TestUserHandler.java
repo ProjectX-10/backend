@@ -57,7 +57,7 @@ public class TestUserHandler extends TestCase {
 		
 		Context context = createContext();
 		String output = "src/test/java/com/ltu/secret/action/test/user.output.json";
-		TestUtils.callAPI(context, "user.input.json", "src/test/java/com/ltu/secret/action/test/user.output.json");
+		TestUtils.callAPI(context, "secretkey.input.json", "src/test/java/com/ltu/secret/action/test/user.output.json");
 		//buildGetRequest(output, "src/test/java/com/ltu/secret/action/test/user.get.output.json");
 		assertTrue(true);
 	}
