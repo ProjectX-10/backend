@@ -38,7 +38,7 @@ public class MailUtil {
 	private static final Logger logger = LogManager.getLogger("MailUtil");
 	
 	/** The Constant FROM. */
-	static final String FROM = S3ResourceLoaderUtil.getProperty(AppConfiguration.FROM_MAIL);  // Replace with your "From" address. This address must be verified.
+	//static final String FROM = S3ResourceLoaderUtil.getProperty(AppConfiguration.FROM_MAIL);  // Replace with your "From" address. This address must be verified.
                                                       
                                                       /** The Constant SUBJECT. */
                                                       // sandbox, this address must be verified.
@@ -52,13 +52,25 @@ public class MailUtil {
     //static final String HOST = "email-smtp.us-east-1.amazonaws.com";//"email-smtp.us-west-2.amazonaws.com";    
     
     /** The Constant SMTP_USERNAME. */
-    static final String SMTP_USERNAME = S3ResourceLoaderUtil.getProperty(AppConfiguration.SMTP_USERNAME);
+    //static final String SMTP_USERNAME = S3ResourceLoaderUtil.getProperty(AppConfiguration.SMTP_USERNAME);
     
     /** The Constant SMTP_PASSWORD. */
-    static final String SMTP_PASSWORD = S3ResourceLoaderUtil.getProperty(AppConfiguration.SMTP_PASSWORD);
+    //static final String SMTP_PASSWORD = S3ResourceLoaderUtil.getProperty(AppConfiguration.SMTP_PASSWORD);
     
     /** The Constant HOST. */
-    static final String HOST = S3ResourceLoaderUtil.getProperty(AppConfiguration.HOST_MAIL);   
+    //static final String HOST = S3ResourceLoaderUtil.getProperty(AppConfiguration.HOST_MAIL);  
+    
+    
+    private static MailUtil instance;
+    
+    private MailUtil(){}
+    
+    public static MailUtil getInstance(){
+        if(instance == null){
+            instance = new MailUtil();
+        }
+        return instance;
+    }
     
     // Port we will connect to on the Amazon SES SMTP endpoint. We are choosing port 25 because we will use
     /** The Constant PORT. */
@@ -98,7 +110,8 @@ public class MailUtil {
 
 			// Create a message with the specified information.
 			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress(FROM));
+			//msg.setFrom(new InternetAddress(FROM));
+			msg.setFrom(new InternetAddress(S3ResourceLoaderUtil.getProperty(AppConfiguration.FROM_MAIL)));
 			msg.setRecipient(javax.mail.Message.RecipientType.TO,
 					new InternetAddress(to));
 			msg.setSubject(SUBJECT);
@@ -114,7 +127,10 @@ public class MailUtil {
 
 				// Connect to Amazon SES using the SMTP username and password
 				// you specified above.
-				transport.connect(HOST, SMTP_USERNAME, SMTP_PASSWORD);
+				//transport.connect(HOST, SMTP_USERNAME, SMTP_PASSWORD);
+				transport.connect(S3ResourceLoaderUtil.getProperty(AppConfiguration.HOST_MAIL), 
+						S3ResourceLoaderUtil.getProperty(AppConfiguration.SMTP_USERNAME), 
+						S3ResourceLoaderUtil.getProperty(AppConfiguration.SMTP_PASSWORD));
 
 				// Send the email.
 				transport.sendMessage(msg, msg.getAllRecipients());
@@ -170,7 +186,7 @@ public class MailUtil {
 
 			// Create a message with the specified information.
 			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress(FROM));
+			msg.setFrom(new InternetAddress(S3ResourceLoaderUtil.getProperty(AppConfiguration.HOST_MAIL)));
 			msg.setRecipient(javax.mail.Message.RecipientType.TO,
 					new InternetAddress(to));
 			msg.setSubject(subject);
@@ -185,7 +201,10 @@ public class MailUtil {
 
 				// Connect to Amazon SES using the SMTP username and password
 				// you specified above.
-				transport.connect(HOST, SMTP_USERNAME, SMTP_PASSWORD);
+				//transport.connect(HOST, SMTP_USERNAME, SMTP_PASSWORD);
+				transport.connect(S3ResourceLoaderUtil.getProperty(AppConfiguration.HOST_MAIL), 
+						S3ResourceLoaderUtil.getProperty(AppConfiguration.SMTP_USERNAME), 
+						S3ResourceLoaderUtil.getProperty(AppConfiguration.SMTP_PASSWORD));
 
 				// Send the email.
 				transport.sendMessage(msg, msg.getAllRecipients());

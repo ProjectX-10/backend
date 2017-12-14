@@ -19,6 +19,9 @@ import java.util.Properties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.S3Object;
 import com.ltu.secret.configuration.AppConfiguration;
 
 /**
@@ -60,21 +63,27 @@ public class S3ResourceLoaderUtil {
 	/**
 	 * Load s3 properties.
 	 */
-//	private static void loadS3Properties() {
-//		try {
-//			AmazonS3 client = new AmazonS3Client();
-//			
-//			S3Object xFile = client.getObject(AppConfiguration.BUCKET_NAME, AppConfiguration.CONFIG_FILE_NAME);
-//			InputStream contents = xFile.getObjectContent();
-//			if (contents != null) {
-//				props.load(contents);
-//			} else {
-//				throw new FileNotFoundException("property file 'vc.config.properties'  not found in bucket 'config-no-deleting' S3 ");
-//			}
-//		} catch (Exception e) {
-//			log.error(e.getMessage(), e.getCause());
-//		}
-//	}
+	private static void loadS3Properties() {
+		try {
+			AmazonS3 client = new AmazonS3Client();
+			
+			String bucket = System.getenv(AppConfiguration.S3_BUCKET);
+			if (bucket == null) {
+				bucket = AppConfiguration.BUCKET_NAME;
+			}
+			
+			S3Object xFile = client.getObject(bucket, AppConfiguration.CONFIG_FILE_NAME);
+			InputStream contents = xFile.getObjectContent();
+			
+			if (contents != null) {
+				props.load(contents);
+			} else {
+				throw new FileNotFoundException("property file 'config.properties'  not found in bucket 'config-no-deleting' S3 ");
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e.getCause());
+		}
+	}
 	
 	/**
 	 * Gets the property.
@@ -83,9 +92,9 @@ public class S3ResourceLoaderUtil {
 	 * @return the property
 	 */
 	public static String getProperty(String key) {
-//		if (!props.containsKey(key)) {
-//			loadS3Properties();
-//		}
+		if (!props.containsKey(key)) {
+			loadS3Properties();
+		}
 		String value = props.getProperty(key);
 		if (value == null) {
 			if (!props.containsKey(key)) {
@@ -98,7 +107,8 @@ public class S3ResourceLoaderUtil {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(getProperty("webUrl"));
+		System.getenv("S3_BUCKET");
+		System.out.println(getProperty("senderEmail"));
 	}
 }
 
