@@ -12,6 +12,10 @@
  */
 package com.ltu.secret.action.user;
 
+import java.nio.ByteBuffer;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.google.gson.JsonObject;
@@ -21,6 +25,7 @@ import com.ltu.secret.dao.factory.DAOFactory;
 import com.ltu.secret.exception.BadRequestException;
 import com.ltu.secret.exception.DAOException;
 import com.ltu.secret.exception.InternalErrorException;
+import com.ltu.secret.helper.PasswordHelper;
 import com.ltu.secret.model.action.user.UpdateSecretKeyRequest;
 import com.ltu.secret.model.action.user.UserResponse;
 import com.ltu.secret.model.user.User;

@@ -8,6 +8,9 @@ import java.util.Calendar;
 import org.json.JSONObject;
 
 import com.ltu.secret.model.action.secret.SearchSecretResponse;
+import com.ltu.secret.model.action.user.UpdateSecretKeyRequest;
+import com.ltu.secret.model.action.user.UserResponse;
+import com.ltu.secret.model.user.User;
 
 import pl.zientarski.SchemaMapper;
 
@@ -25,7 +28,7 @@ public class Test {
 		// TODO Auto-generated method stub
 		System.out.println("Json schema...");
 		
-		JSONObject schema = new SchemaMapper().toJsonSchema4(SearchSecretResponse.class, true);
+		JSONObject schema = new SchemaMapper().toJsonSchema4(UpdateSecretKeyRequest.class, true);
 		System.out.println(schema.toString());
 		
 		System.out.println(Calendar.getInstance().getTime().getTime());

@@ -25,6 +25,7 @@ import com.ltu.secret.constants.Constants;
 import com.ltu.secret.dao.factory.DAOFactory;
 import com.ltu.secret.exception.AuthorizationException;
 import com.ltu.secret.exception.BadRequestException;
+import com.ltu.secret.exception.CommonException;
 import com.ltu.secret.exception.DAOException;
 import com.ltu.secret.exception.InternalErrorException;
 import com.ltu.secret.helper.PasswordHelper;
@@ -36,6 +37,7 @@ import com.ltu.secret.model.user.UserIdentity;
 import com.ltu.secret.provider.CredentialsProvider;
 import com.ltu.secret.provider.ProviderFactory;
 import com.ltu.secret.utils.AppUtil;
+import com.ltu.secret.utils.MailUtil;
 import com.ltu.secret.utils.RandomUtil;
 
 /**
@@ -77,12 +79,6 @@ public class RegisterAction extends AbstractSecretAction {
             throw new BadRequestException(ExceptionMessages.EX_PARAM_DISPLAYED_NAME_REQUIRED);
         }
         
-        if (input == null ||
-                input.getSecretKey() == null ||
-                input.getSecretKey().trim().equals("")) {
-            throw new BadRequestException(ExceptionMessages.EX_PARAM_SECRET_KEY_REQUIRED);
-        }
-        
         if (!AppUtil.validateEmail(input.getEmail())) {
             throw new BadRequestException(ExceptionMessages.EX_PARAM_EMAIL_INVALID);
         }
@@ -102,7 +98,6 @@ public class RegisterAction extends AbstractSecretAction {
             byte[] salt = PasswordHelper.generateSalt();
             byte[] encryptedPassword = PasswordHelper.getEncryptedPassword(input.getPassword(), salt);
             newUser.setPassword(ByteBuffer.wrap(encryptedPassword));
-            newUser.setSecretKey(input.getSecretKey());
             newUser.setSalt(ByteBuffer.wrap(salt));
         } catch (final NoSuchAlgorithmException e) {
             logger.log("No algrithm found for password encryption\n" + e.getMessage());
@@ -130,15 +125,15 @@ public class RegisterAction extends AbstractSecretAction {
             
         	newUser = dao.merge(newUser);
         	//FIXME Need to fix send email
-        	//MailUtil.sendActivateEmail(newUser.getEmail(), newUser.getActivateCode());
+        	MailUtil.sendActivateEmail(newUser.getEmail(), newUser.getActivateCode());
         } catch (final DAOException e) {
             logger.log("Error while creating new device\n" + e.getMessage());
             throw new InternalErrorException(ExceptionMessages.EX_DAO_ERROR);
-//        } catch (CommonException e) {
-//        	logger.log("Error while creating new device\n" + e.getMessage());
-//        	//FIXME PhuLTU need to handle transaction here
-//        	deleteUser(newUser);
-//            throw new InternalErrorException(ExceptionMessages.EX_SEND_MAIL_ERROR);
+        } catch (CommonException e) {
+        	logger.log("Error while creating new device\n" + e.getMessage());
+        	//FIXME PhuLTU need to handle transaction here
+        	deleteUser(newUser);
+            throw new InternalErrorException(ExceptionMessages.EX_SEND_MAIL_ERROR);
 		} catch (final AuthorizationException e) {
             logger.log("Error while accessing Cognito\n" + e.getMessage());
             throw new InternalErrorException(ExceptionMessages.EX_NO_COGNITO_IDENTITY);
