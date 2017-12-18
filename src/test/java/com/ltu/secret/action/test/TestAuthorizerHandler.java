@@ -14,8 +14,7 @@ package com.ltu.secret.action.test;
 
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.ltu.secret.auth.APIGatewayAuthorizerHandler;
-import com.ltu.secret.auth.TokenAuthorizerContext;
+import com.ltu.secret.auth.UserScheduleHandler;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -62,12 +61,24 @@ public class TestAuthorizerHandler extends TestCase {
 //		assertTrue(true);
 //	}
 	
+//	@org.junit.Test
+//	public void testLambdaFunctionHandler() {
+//	    APIGatewayAuthorizerHandler handler = new APIGatewayAuthorizerHandler();
+//	    Context ctx = createContext();
+//	    TokenAuthorizerContext input = new TokenAuthorizerContext("TOKEN", "e67ee89b-89a1-44be-a2ea-f00947c48060:1520040447633:4118d57e9cca675522f7500d399dad9a", "arn:aws:execute-api:us-east-1:205631098170:yoj0jqj2q4/null/GET/");
+//	    Object output = handler.handleRequest(input, ctx);
+//	    if (output != null) {
+//	        System.out.println(output.toString());
+//	    }
+//	    //Assert.assertEquals("sourcebucket", output);
+//	}
+	
 	@org.junit.Test
 	public void testLambdaFunctionHandler() {
-	    APIGatewayAuthorizerHandler handler = new APIGatewayAuthorizerHandler();
+	    UserScheduleHandler handler = new UserScheduleHandler();
 	    Context ctx = createContext();
-	    TokenAuthorizerContext input = new TokenAuthorizerContext("TOKEN", "e67ee89b-89a1-44be-a2ea-f00947c48060:1520040447633:4118d57e9cca675522f7500d399dad9a", "arn:aws:execute-api:us-east-1:205631098170:yoj0jqj2q4/null/GET/");
-	    Object output = handler.handleRequest(input, ctx);
+	    //TokenAuthorizerContext input = new TokenAuthorizerContext("TOKEN", "e67ee89b-89a1-44be-a2ea-f00947c48060:1520040447633:4118d57e9cca675522f7500d399dad9a", "arn:aws:execute-api:us-east-1:205631098170:yoj0jqj2q4/null/GET/");
+	    Object output = handler.handleRequest("", ctx);
 	    if (output != null) {
 	        System.out.println(output.toString());
 	    }
