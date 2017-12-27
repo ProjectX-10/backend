@@ -54,7 +54,9 @@ public class GetAction extends AbstractSecretAction {
 
         UserResponse output = new UserResponse();
         output.setItem(getUser);
-
+        String json = getGson().toJson(output);
+        
+        System.out.println(json);
         return getGson().toJson(output);
     }
     

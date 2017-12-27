@@ -12,16 +12,7 @@
  */
 package com.ltu.secret.action.test;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import org.apache.commons.io.IOUtils;
-
 import com.amazonaws.services.lambda.runtime.Context;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -97,63 +88,64 @@ public class TestSecretHandler extends TestCase {
 		System.out.println("testDelete calling...");
 		Context context = createContext();
 		//TestUtils.callAPI(context, "delete.get.output.json", "src/test/java/com/ltu/secret/action/test/secret.output.json");
-		TestUtils.callAPI(context, "delete.secret.input.json", "src/test/java/com/ltu/secret/action/test/search.output.json");
+		TestUtils.callAPI(context, "search.input.json", "src/test/java/com/ltu/secret/action/test/search.output.json");
+		
 		assertTrue(true);
 	}
-	
-	
-	
-	/**
-	 * Builds the get request.
-	 *
-	 * @param inputFile the input file
-	 * @param outputFile the output file
-	 */
-	private void buildGetRequest(String inputFile, String outputFile) {
-		JsonParser parser = new JsonParser();
-		JsonObject inputObj;
-		try {
-			InputStream request = TestUtils.class.getResourceAsStream(inputFile);
-			inputObj = parser.parse(IOUtils.toString(request)).getAsJsonObject();
-			StringBuilder output = new StringBuilder();
-			output.append("{");
-			output.append("\"action\":\"com.ltu.secret.action.secret.GetAction\",");
-			output.append("\"body\":{");
-			JsonObject item = inputObj.get("item").getAsJsonObject();
-			output.append("\"id\":\"" + item.get("id").getAsString()+"\"");
-			output.append("}");
-			output.append("}");
-			OutputStream response = new FileOutputStream(outputFile);
-			IOUtils.write(output, response);
-			
-			response.close();
-			response.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private void buildDeleteRequest(String inputFile, String outputFile) {
-		JsonParser parser = new JsonParser();
-		JsonObject inputObj;
-		try {
-			InputStream request = TestUtils.class.getResourceAsStream(inputFile);
-			inputObj = parser.parse(IOUtils.toString(request)).getAsJsonObject();
-			StringBuilder output = new StringBuilder();
-			output.append("{");
-			output.append("\"action\":\"com.ltu.secret.action.secret.DeleteAction\",");
-			output.append("\"body\":{");
-			JsonObject item = inputObj.get("item").getAsJsonObject();
-			output.append("\"id\":\"" + item.get("id").getAsString()+"\"");
-			output.append("}");
-			output.append("}");
-			OutputStream response = new FileOutputStream(outputFile);
-			IOUtils.write(output, response);
-			response.flush();
-			response.close();
-			request.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	
+//	
+//	
+//	/**
+//	 * Builds the get request.
+//	 *
+//	 * @param inputFile the input file
+//	 * @param outputFile the output file
+//	 */
+//	private void buildGetRequest(String inputFile, String outputFile) {
+//		JsonParser parser = new JsonParser();
+//		JsonObject inputObj;
+//		try {
+//			InputStream request = TestUtils.class.getResourceAsStream(inputFile);
+//			inputObj = parser.parse(IOUtils.toString(request)).getAsJsonObject();
+//			StringBuilder output = new StringBuilder();
+//			output.append("{");
+//			output.append("\"action\":\"com.ltu.secret.action.secret.GetAction\",");
+//			output.append("\"body\":{");
+//			JsonObject item = inputObj.get("item").getAsJsonObject();
+//			output.append("\"id\":\"" + item.get("id").getAsString()+"\"");
+//			output.append("}");
+//			output.append("}");
+//			OutputStream response = new FileOutputStream(outputFile);
+//			IOUtils.write(output, response);
+//			
+//			response.close();
+//			response.flush();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
+//	
+//	private void buildDeleteRequest(String inputFile, String outputFile) {
+//		JsonParser parser = new JsonParser();
+//		JsonObject inputObj;
+//		try {
+//			InputStream request = TestUtils.class.getResourceAsStream(inputFile);
+//			inputObj = parser.parse(IOUtils.toString(request)).getAsJsonObject();
+//			StringBuilder output = new StringBuilder();
+//			output.append("{");
+//			output.append("\"action\":\"com.ltu.secret.action.secret.DeleteAction\",");
+//			output.append("\"body\":{");
+//			JsonObject item = inputObj.get("item").getAsJsonObject();
+//			output.append("\"id\":\"" + item.get("id").getAsString()+"\"");
+//			output.append("}");
+//			output.append("}");
+//			OutputStream response = new FileOutputStream(outputFile);
+//			IOUtils.write(output, response);
+//			response.flush();
+//			response.close();
+//			request.close();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 }

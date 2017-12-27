@@ -96,7 +96,7 @@ public interface SecretDAO {
      * @param cursor the cursor
      * @return the list
      */
-    List<Secret> search(String query, int limit, String cursor);
+    List<Secret> search(String query, int limit, String cursor, String indexStr);
     
     /**
      * Mapper scan.
@@ -106,7 +106,7 @@ public interface SecretDAO {
      * @param cursor the cursor
      * @return the list
      */
-    public List<Secret> mapperScan(String query, int limit, String cursor);
+    public List<Secret> mapperScan(String query, int limit, String cursor, String indexStr);
     
     /**
      * Scan.
@@ -116,5 +116,5 @@ public interface SecretDAO {
      * @param cursor the cursor
      * @return the list
      */
-    public List<Secret> scan(String query, int limit, String cursor);
+    public List<Secret> scan(String query, int limit, String cursor, String indexStr);
 }

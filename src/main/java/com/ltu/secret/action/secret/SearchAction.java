@@ -17,14 +17,13 @@ import java.util.List;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.google.gson.JsonObject;
 import com.ltu.secret.action.AbstractSecretAction;
+import com.ltu.secret.configuration.DynamoDBConfiguration;
 import com.ltu.secret.configuration.ExceptionMessages;
 import com.ltu.secret.dao.factory.DAOFactory;
 import com.ltu.secret.exception.BadRequestException;
 import com.ltu.secret.exception.InternalErrorException;
-import com.ltu.secret.model.action.secret.GetSecretRequest;
 import com.ltu.secret.model.action.secret.SearchSecretRequest;
 import com.ltu.secret.model.action.secret.SearchSecretResponse;
-import com.ltu.secret.model.action.secret.SecretResponse;
 import com.ltu.secret.model.secret.Secret;
 import com.ltu.secret.model.secret.SecretDAO;
 
@@ -50,7 +49,9 @@ public class SearchAction extends AbstractSecretAction {
 
         SecretDAO dao = DAOFactory.getSecretDAO();
 
-        List<Secret> secrets = dao.search(input.getQuery(), input.getLimit(), input.getCursor());
+        List<Secret> secrets = dao.search(input.getQuery(), input.getLimit(), input.getCursor(), DynamoDBConfiguration.SECRET_USERID_INDEX);
+        
+        //List<Secret> secrets = dao.search(input.getQuery(), input.getLimit(), input.getCursor(), null);
 
         if (secrets == null) {
             throw new InternalErrorException(ExceptionMessages.EX_USER_NOT_FOUND);

@@ -115,25 +115,39 @@ public class DDBSecretDAO extends com.ltu.secret.dao.AbstractDao<Secret> impleme
 	}
 
 	@Override
-	public List<Secret> search(String query, int limit, String cursor) {
+	public List<Secret> search(String query, int limit, String cursor, String indexStr) {
 		if (query == null) {
-			return mapperScan(query, limit, cursor);
+			return mapperScan(query, limit, cursor, indexStr);
 		}
-		return scan(query, limit, cursor);
+		return scan(query, limit, cursor, indexStr);
 	}
-
-	private Map<String, AttributeValue> buildExclusiveStartKey(String cursor) {
+	
+	private Map<String, AttributeValue> buildExclusiveStartKey(String cursor, String indexStr) {
 		if (cursor == null || cursor.trim().equals(Constants.EMPTY_STRING)) {
 			return null;
+		}
+		if (DynamoDBConfiguration.SECRET_USERID_INDEX.equals(indexStr)) {
+			return buildUserIdDomainIndex(cursor);
 		}
 		Map<String, AttributeValue> exclusiveStartKey = new HashMap<String, AttributeValue>();
 		exclusiveStartKey.put("id", new AttributeValue(cursor));
 		return exclusiveStartKey;
 	}
+	
+	private Map<String, AttributeValue> buildUserIdDomainIndex(String cursor) {
+		Map<String, AttributeValue> exclusiveStartKey = new HashMap<String, AttributeValue>();
+		Secret secret = find(cursor);
+		exclusiveStartKey.put("id", new AttributeValue(cursor));
+		exclusiveStartKey.put("domain", new AttributeValue(secret.getDomain()));
+		exclusiveStartKey.put("userId", new AttributeValue(secret.getUserId()));
+		return exclusiveStartKey;
+	}
 
-	private ScanRequest buildScan(String query, int limit) {
+	private ScanRequest buildScan(String query, int limit, String indexStr) {
 		ScanRequest scanRequest = new ScanRequest(DynamoDBConfiguration.SECRET_TABLE_NAME);
-
+		if (indexStr != null) {
+			scanRequest.setIndexName(indexStr);
+		}
 		if (query != null) {
 			HashMap<String, Condition> scanFilter = new HashMap<String, Condition>();
 			String[] fields = query.split(Constants.AND_STRING);
@@ -145,32 +159,42 @@ public class DDBSecretDAO extends com.ltu.secret.dao.AbstractDao<Secret> impleme
 					scanFilter.put("userId", condition);
 				} else if (field.indexOf("domain:") != -1) {
 					String[] array = field.split(":");
-					Condition condition = new Condition().withComparisonOperator(ComparisonOperator.EQ.toString())
+					Condition condition = new Condition().withComparisonOperator(ComparisonOperator.CONTAINS.toString())
 							.withAttributeValueList(new AttributeValue().withS(array[1]));
 					scanFilter.put("domain", condition);
 				} else if (field.indexOf("username:") != -1) {
 					String[] array = field.split(":");
-					Condition condition = new Condition().withComparisonOperator(ComparisonOperator.EQ.toString())
+					Condition condition = new Condition().withComparisonOperator(ComparisonOperator.CONTAINS.toString())
 							.withAttributeValueList(new AttributeValue().withS(array[1]));
 					scanFilter.put("username", condition);
+				} else if (field.indexOf("searchText:") != -1) {
+					String[] array = field.split(":");
+					Condition condition = new Condition().withComparisonOperator(ComparisonOperator.CONTAINS.toString())
+							.withAttributeValueList(new AttributeValue().withS(array[1]));
+					scanFilter.put("searchText", condition);
 				} 
 			}
 
 			scanRequest.withScanFilter(scanFilter);
 		}
-		// if (limit <= 0 || limit > DynamoDBConfiguration.SCAN_LIMIT) {
-		// limit = DynamoDBConfiguration.SCAN_LIMIT;
-		// }
-		// scanRequest.setLimit(limit);
+		 if (limit <= 0 || limit > DynamoDBConfiguration.SCAN_LIMIT) {
+			 limit = DynamoDBConfiguration.SCAN_LIMIT;
+		 } else {
+			 scanRequest.setLimit(limit);
+		 }
 
-		scanRequest.setLimit(DynamoDBConfiguration.SCAN_LIMIT);
+		//scanRequest.setLimit(DynamoDBConfiguration.SCAN_LIMIT);
 
 		return scanRequest;
 	}
 
-	private DynamoDBScanExpression buildScanMapper(String query, int limit) {
+	private DynamoDBScanExpression buildScanMapper(String query, int limit, String indexStr) {
 		DynamoDBScanExpression dbScanExpression = new DynamoDBScanExpression();
 
+		if (indexStr != null) {
+			dbScanExpression.withIndexName(indexStr);
+		}
+			
 		if (query != null) {
 			String[] fields = query.split(Constants.AND_STRING);
 			for (String field : fields) {
@@ -181,37 +205,44 @@ public class DDBSecretDAO extends com.ltu.secret.dao.AbstractDao<Secret> impleme
 					dbScanExpression.addFilterCondition("userId", condition);
 				} else if (field.indexOf("domain:") != -1) {
 					String[] array = field.split(":");
-					Condition condition = new Condition().withComparisonOperator(ComparisonOperator.EQ.toString())
+					Condition condition = new Condition().withComparisonOperator(ComparisonOperator.CONTAINS.toString())
 							.withAttributeValueList(new AttributeValue().withS(array[1]));
 					dbScanExpression.addFilterCondition("domain", condition);
 				} else if (field.indexOf("username:") != -1) {
 					String[] array = field.split(":");
-					Condition condition = new Condition().withComparisonOperator(ComparisonOperator.EQ.toString())
+					Condition condition = new Condition().withComparisonOperator(ComparisonOperator.CONTAINS.toString())
 							.withAttributeValueList(new AttributeValue().withS(array[1]));
 					dbScanExpression.addFilterCondition("username", condition);
+				} else if (field.indexOf("searchText:") != -1) {
+					String[] array = field.split(":");
+					Condition condition = new Condition().withComparisonOperator(ComparisonOperator.CONTAINS.toString())
+							.withAttributeValueList(new AttributeValue().withS(array[1]));
+					dbScanExpression.addFilterCondition("searchText", condition);
 				} 
 			}
 		}
-		// if (limit <= 0 || limit > DynamoDBConfiguration.SCAN_LIMIT) {
-		// limit = DynamoDBConfiguration.SCAN_LIMIT;
-		// }
-		// dbScanExpression.setLimit(limit);
+		 if (limit <= 0 || limit > DynamoDBConfiguration.SCAN_LIMIT) {
+			 limit = DynamoDBConfiguration.SCAN_LIMIT;
+		 } else {
+			 dbScanExpression.setLimit(limit);
+		 }
 
-		dbScanExpression.setLimit(DynamoDBConfiguration.SCAN_LIMIT);
+		//dbScanExpression.setLimit(DynamoDBConfiguration.SCAN_LIMIT);
 
 		return dbScanExpression;
 	}
 
 	@Override
-	public List<Secret> scan(String query, int limit, String cursor) {
-		ScanRequest scanRequest = buildScan(query, limit);
-		Map<String, AttributeValue> exclusiveStartKey = buildExclusiveStartKey(cursor);
+	public List<Secret> scan(String query, int limit, String cursor, String indexStr) {
+		ScanRequest scanRequest = buildScan(query, limit, indexStr);
+		Map<String, AttributeValue> exclusiveStartKey = buildExclusiveStartKey(cursor, indexStr);
 		List<Secret> secrets = new ArrayList<Secret>();
 
 		do {
 			if (exclusiveStartKey != null) {
 				scanRequest.setExclusiveStartKey(exclusiveStartKey);
 			}
+			
 			ScanResult scanResult = client.scan(scanRequest);
 
 			if (scanResult != null && scanResult.getItems().size() > 0) {
@@ -229,9 +260,9 @@ public class DDBSecretDAO extends com.ltu.secret.dao.AbstractDao<Secret> impleme
 	}
 
 	@Override
-	public List<Secret> mapperScan(String query, int limit, String cursor) {
-		DynamoDBScanExpression scanExpression = buildScanMapper(query, limit);
-		Map<String, AttributeValue> exclusiveStartKey = buildExclusiveStartKey(cursor);
+	public List<Secret> mapperScan(String query, int limit, String cursor, String indexStr) {
+		DynamoDBScanExpression scanExpression = buildScanMapper(query, limit, indexStr);
+		Map<String, AttributeValue> exclusiveStartKey = buildExclusiveStartKey(cursor, indexStr);
 		if (exclusiveStartKey != null) {
 			scanExpression.setExclusiveStartKey(exclusiveStartKey);
 		}
@@ -267,10 +298,41 @@ public class DDBSecretDAO extends com.ltu.secret.dao.AbstractDao<Secret> impleme
 		query.append(Constants.AND_STRING);
 		query.append("username:" + username);
 		
-		List<Secret> secrets = search(query.toString(), 1, null);
+		List<Secret> secrets = search(query.toString(), 1, null, DynamoDBConfiguration.SECRET_USERID_INDEX);
 		if (secrets != null && !secrets.isEmpty()) {
 			return secrets.get(0);
 		}
 		return null;
 	}
+	
+//	public List<Secret> queryIndex(String indexStr) {
+//		DynamoDB dynamoDB = new DynamoDB(client);
+//		Table table = dynamoDB.getTable(DynamoDBConfiguration.SECRET_TABLE_NAME);
+//		Index index = table.getIndex(indexStr);
+//		
+//		ScanRequest request = new ScanRequest();
+//		QuerySpec spec = new QuerySpec()
+//			    .withKeyConditionExpression("Artist = :v_artist and AlbumTitle = :v_title")
+//			    .withValueMap(new ValueMap()
+//			        .withString(":v_artist", "Acme Band")
+//			        .withString(":v_title", "Songs About Life"));
+//		
+//		spec.setMaxPageSize(10);
+//		DynamoDBQueryExpression<PostedByMessage> queryExpression = new DynamoDBQueryExpression<PostedByMessage>()
+//			    .withIndexName("PostedBy-Message-Index")
+//			    .withConsistentRead(false)
+//			    .withKeyConditionExpression("PostedBy = :v1 and begins_with(Message, :v2)")
+//			    .withExpressionAttributeValues(eav);
+//
+//		
+//			ItemCollection<QueryOutcome> items = index.query(spec);
+//
+//			Iterator<Item> itemsIter = items.iterator();
+//
+//			while (itemsIter.hasNext()) {
+//			    Item item = itemsIter.next();
+//			    System.out.println(item.toJSONPretty());
+//			}
+//		return null;
+//	}
 }

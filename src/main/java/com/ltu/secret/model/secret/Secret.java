@@ -55,6 +55,11 @@ public class Secret implements Comparable<Secret>{
 	@Expose
 	private String username;
 	
+	/** The search text. */
+	@DynamoDBAttribute(attributeName = "searchText")
+	@Expose
+	private String searchText;
+	
 	/** The password. */
 	@DynamoDBAttribute(attributeName = "password")
 	private String password;
@@ -200,6 +205,24 @@ public class Secret implements Comparable<Secret>{
 	 */
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	/**
+	 * Gets the search text.
+	 *
+	 * @return the search text
+	 */
+	public String getSearchText() {
+		return searchText;
+	}
+
+	/**
+	 * Sets the search text.
+	 *
+	 * @param searchText the new search text
+	 */
+	public void setSearchText(String searchText) {
+		this.searchText = searchText;
 	}
 
 	@Override
