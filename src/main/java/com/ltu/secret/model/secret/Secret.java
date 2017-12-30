@@ -229,6 +229,13 @@ public class Secret implements Comparable<Secret>{
 	public int compareTo(Secret arg0) {
 		return userId.compareTo(arg0.userId);
 	}
+
+	@Override
+	public String toString() {
+		return "Secret [id=" + id + ", userId=" + userId + ", domain=" + domain + ", username=" + username
+				+ ", searchText=" + searchText + ", password=" + password + ", note=" + note + ", createdAt="
+				+ createdAt + "]";
+	}
 	
 }
 

@@ -25,7 +25,7 @@ public class DynamoDBConfiguration {
     // TODO: Specify the name of the Secrets table in DynamoDB
     public static final String SECRET_TABLE_NAME = "x_secrets";
     
-    public static final int SCAN_LIMIT = 10;
+    public static final int SCAN_LIMIT = 50;
     
     /** The Constant SECRET_USERID_INDEX. */
     public static final String SECRET_USERID_INDEX = "userId-domain-index";

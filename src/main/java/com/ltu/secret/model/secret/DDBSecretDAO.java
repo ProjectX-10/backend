@@ -172,18 +172,16 @@ public class DDBSecretDAO extends com.ltu.secret.dao.AbstractDao<Secret> impleme
 					Condition condition = new Condition().withComparisonOperator(ComparisonOperator.CONTAINS.toString())
 							.withAttributeValueList(new AttributeValue().withS(array[1]));
 					scanFilter.put("searchText", condition);
-				} 
+				}
 			}
 
 			scanRequest.withScanFilter(scanFilter);
 		}
-		 if (limit <= 0 || limit > DynamoDBConfiguration.SCAN_LIMIT) {
-			 limit = DynamoDBConfiguration.SCAN_LIMIT;
-		 } else {
-			 scanRequest.setLimit(limit);
-		 }
+		if (limit <= 0 || limit > DynamoDBConfiguration.SCAN_LIMIT) {
+			limit = DynamoDBConfiguration.SCAN_LIMIT;
+		}
 
-		//scanRequest.setLimit(DynamoDBConfiguration.SCAN_LIMIT);
+		scanRequest.setLimit(limit);
 
 		return scanRequest;
 	}
@@ -223,11 +221,9 @@ public class DDBSecretDAO extends com.ltu.secret.dao.AbstractDao<Secret> impleme
 		}
 		 if (limit <= 0 || limit > DynamoDBConfiguration.SCAN_LIMIT) {
 			 limit = DynamoDBConfiguration.SCAN_LIMIT;
-		 } else {
-			 dbScanExpression.setLimit(limit);
-		 }
+		 } 
 
-		//dbScanExpression.setLimit(DynamoDBConfiguration.SCAN_LIMIT);
+		dbScanExpression.setLimit(limit);
 
 		return dbScanExpression;
 	}
@@ -244,6 +240,7 @@ public class DDBSecretDAO extends com.ltu.secret.dao.AbstractDao<Secret> impleme
 			}
 			
 			ScanResult scanResult = client.scan(scanRequest);
+
 
 			if (scanResult != null && scanResult.getItems().size() > 0) {
 				for (Map<String, AttributeValue> item : scanResult.getItems()) {
