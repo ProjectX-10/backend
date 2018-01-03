@@ -82,7 +82,7 @@ public class ForgotPasswordAction extends AbstractSecretAction{
     	user.setActivateCode(changePasswordKey);
     	try {
     		String message = buildMessage(user.getEmail(), changePasswordKey);  
-    		MailUtil.sendEmail(user.getEmail(), "[Video Conference App] Change password key", message);
+    		MailUtil.sendEmail(user.getEmail(), "[Secret App] Change password key", message);
     		user = dao.update(user);
 		} catch (CommonException ce) {
 			logger.log("Error sending email " + ce.getMessage());
