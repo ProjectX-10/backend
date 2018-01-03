@@ -186,7 +186,7 @@ public class MailUtil {
 
 			// Create a message with the specified information.
 			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress(S3ResourceLoaderUtil.getProperty(AppConfiguration.HOST_MAIL)));
+			msg.setFrom(new InternetAddress(S3ResourceLoaderUtil.getProperty(AppConfiguration.FROM_MAIL)));
 			msg.setRecipient(javax.mail.Message.RecipientType.TO,
 					new InternetAddress(to));
 			msg.setSubject(subject);
