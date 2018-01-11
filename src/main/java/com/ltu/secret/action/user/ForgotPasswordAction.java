@@ -16,7 +16,6 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.google.gson.JsonObject;
 import com.ltu.secret.action.AbstractSecretAction;
-import com.ltu.secret.configuration.AppConfiguration;
 import com.ltu.secret.configuration.ExceptionMessages;
 import com.ltu.secret.constants.Constants;
 import com.ltu.secret.dao.factory.DAOFactory;
@@ -30,7 +29,6 @@ import com.ltu.secret.model.user.User;
 import com.ltu.secret.model.user.UserDAO;
 import com.ltu.secret.utils.MailUtil;
 import com.ltu.secret.utils.RandomUtil;
-import com.ltu.secret.utils.S3ResourceLoaderUtil;
 
 
 /**
@@ -103,9 +101,11 @@ public class ForgotPasswordAction extends AbstractSecretAction{
 	 */
 	public static String buildMessage(String email, String changePasswordKey) {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Hi, \nIn order to change password, please go to this link: ");
-		builder.append(S3ResourceLoaderUtil.getProperty(AppConfiguration.WEB_URL_KEY));
-		builder.append("changepassword/?email="+email+"&changekey="+changePasswordKey);
+//		builder.append("Hi, \nIn order to change password, please go to this link: ");
+//		builder.append(S3ResourceLoaderUtil.getProperty(AppConfiguration.WEB_URL_KEY));
+//		builder.append("changepassword/?email="+email+"&changekey="+changePasswordKey);
+		builder.append("Hi, \nIn order to change password, please use change key: ");
+		builder.append(changePasswordKey);
 		return builder.toString();
 	}
 
