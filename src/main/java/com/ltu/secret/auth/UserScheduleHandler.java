@@ -12,7 +12,6 @@
  */
 package com.ltu.secret.auth;
 
-
 import java.util.Calendar;
 import java.util.List;
 
@@ -27,42 +26,40 @@ import com.ltu.secret.model.user.UserDAO;
 /**
  * Handles IO for a Java Lambda function as a custom authorizer for API Gateway.
  *
- * @author uyphu
- * created on May 20, 2017
+ * @author uyphu created on May 20, 2017
  */
 public class UserScheduleHandler implements RequestHandler<String, String> {
-	
+
 	private LambdaLogger logger;
 
-    @Override
-    public String handleRequest(String input, Context context) {
-    	logger = context.getLogger();
-    	UserDAO dao = DAOFactory.getUserDAO();
-    	String cursor = null;
-    	List<User> users;
-    	do {
-    		users = dao.search("status:P", 10, cursor);
-    		if (!users.isEmpty()) {
+	@Override
+	public String handleRequest(String input, Context context) {
+		logger = context.getLogger();
+		UserDAO dao = DAOFactory.getUserDAO();
+		String cursor = null;
+		List<User> users;
+		do {
+			users = dao.search("status:P", 10, cursor, null);
+			if (!users.isEmpty()) {
 				for (User user : users) {
 					Calendar calendar = Calendar.getInstance();
-					calendar.add(Calendar.DAY_OF_YEAR, 0);
+					calendar.add(Calendar.DAY_OF_YEAR, -1);
 					if (user.getCreatedAt().before(calendar.getTime())) {
 						try {
+							logger.log("Deleting userId: " + user.getId());
 							dao.delete(user.getId());
 						} catch (DAOException e) {
-							logger.log("Cannot delete user. "+ e.getMessage());
+							logger.log("Cannot delete user. " + e.getMessage());
 						}
 					}
 				}
-				cursor = users.get(users.size()-1).getId();
+				cursor = users.get(users.size() - 1).getId();
 			} else {
 				cursor = null;
 			}
-    	} while (cursor != null);
-    	
-    	return null;
-    }
-    
-    
+		} while (cursor != null);
+
+		return null;
+	}
 
 }

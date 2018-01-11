@@ -29,4 +29,7 @@ public class DynamoDBConfiguration {
     
     /** The Constant SECRET_USERID_INDEX. */
     public static final String SECRET_USERID_INDEX = "userId-domain-index";
+    
+    /** The Constant USER_EMAIL_INDEX. */
+    public static final String USER_EMAIL_INDEX = "email-index";
 }

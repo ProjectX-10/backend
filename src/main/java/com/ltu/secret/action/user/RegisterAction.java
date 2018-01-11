@@ -59,7 +59,6 @@ public class RegisterAction extends AbstractSecretAction {
         logger = lambdaContext.getLogger();
         
         RegisterUserRequest input = getGson().fromJson(request, RegisterUserRequest.class);
-        //System.out.println("senderEmail:" + S3ResourceLoaderUtil.getProperty("senderEmail"));
         logger.log("RegisterAction calling ... ");
         if (input == null ||
                 input.getEmail() == null ||
@@ -124,7 +123,6 @@ public class RegisterAction extends AbstractSecretAction {
             newUser.setIdentity(identity);
             
         	newUser = dao.merge(newUser);
-        	//FIXME Need to fix send email
         	MailUtil.sendActivateEmail(newUser.getEmail(), newUser.getActivateCode());
         } catch (final DAOException e) {
             logger.log("Error while creating new device\n" + e.getMessage());

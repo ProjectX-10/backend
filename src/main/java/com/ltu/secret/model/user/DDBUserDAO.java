@@ -31,6 +31,7 @@ import com.ltu.secret.configuration.ExceptionMessages;
 import com.ltu.secret.constants.Constants;
 import com.ltu.secret.exception.DAOException;
 import com.ltu.secret.exception.ErrorCodeDetail;
+import com.ltu.secret.model.secret.Secret;
 import com.ltu.secret.utils.AppUtil;
 import com.ltu.secret.utils.ConvertUtil;
 
@@ -142,16 +143,16 @@ public class DDBUserDAO extends com.ltu.secret.dao.AbstractDao<User> implements 
 	}
 
 	@Override
-	public List<User> search(String query, int limit, String cursor) {
+	public List<User> search(String query, int limit, String cursor, String indexStr) {
 		if (query == null) {
-			return mapperScan(query, limit, cursor);
+			return mapperScan(query, limit, cursor, indexStr);
 		}
-		return scan(query, limit, cursor);
+		return scan(query, limit, cursor, indexStr);
 	}
 
 	@Override
 	public User findByEmail(String email) {
-		List<User> list = search("email:" + email, 1, null);
+		List<User> list = search("email:" + email, 1, null, DynamoDBConfiguration.USER_EMAIL_INDEX);
 		if (list != null && !list.isEmpty()) {
 			return list.get(0);
 		}
@@ -160,7 +161,7 @@ public class DDBUserDAO extends com.ltu.secret.dao.AbstractDao<User> implements 
 
 	@Override
 	public User findByActivateCode(String activateCode) throws DAOException {
-		List<User> list = search("activateCode:" + activateCode, 1, null);
+		List<User> list = search("activateCode:" + activateCode, 1, null, null);
 		if (list != null && !list.isEmpty()) {
 			return list.get(0);
 		}
@@ -169,7 +170,7 @@ public class DDBUserDAO extends com.ltu.secret.dao.AbstractDao<User> implements 
 
 	@Override
 	public User activateUser(String activateCode) throws DAOException {
-		List<User> list = search("activateCode:" + activateCode, 1, null);
+		List<User> list = search("activateCode:" + activateCode, 1, null, null);
 		if (list != null && !list.isEmpty()) {
 			User user = list.get(0);
 			user.setActivateCode(null);
@@ -179,17 +180,41 @@ public class DDBUserDAO extends com.ltu.secret.dao.AbstractDao<User> implements 
 		return null;
 	}
 
-	private Map<String, AttributeValue> buildExclusiveStartKey(String cursor) {
+//	private Map<String, AttributeValue> buildExclusiveStartKey(String cursor) {
+//		if (cursor == null || cursor.trim().equals(Constants.EMPTY_STRING)) {
+//			return null;
+//		}
+//		Map<String, AttributeValue> exclusiveStartKey = new HashMap<String, AttributeValue>();
+//		exclusiveStartKey.put("id", new AttributeValue(cursor));
+//		return exclusiveStartKey;
+//	}
+	
+	private Map<String, AttributeValue> buildExclusiveStartKey(String cursor, String indexStr) {
 		if (cursor == null || cursor.trim().equals(Constants.EMPTY_STRING)) {
 			return null;
+		}
+		if (DynamoDBConfiguration.USER_EMAIL_INDEX.equals(indexStr)) {
+			return buildEmailIndex(cursor);
 		}
 		Map<String, AttributeValue> exclusiveStartKey = new HashMap<String, AttributeValue>();
 		exclusiveStartKey.put("id", new AttributeValue(cursor));
 		return exclusiveStartKey;
 	}
+	
+	private Map<String, AttributeValue> buildEmailIndex(String cursor) {
+		Map<String, AttributeValue> exclusiveStartKey = new HashMap<String, AttributeValue>();
+		User user = find(cursor);
+		exclusiveStartKey.put("id", new AttributeValue(cursor));
+		exclusiveStartKey.put("email", new AttributeValue(user.getEmail()));
+		return exclusiveStartKey;
+	}
 
-	private ScanRequest buildScan(String query, int limit) {
+	private ScanRequest buildScan(String query, int limit, String indexStr) {
 		ScanRequest scanRequest = new ScanRequest(DynamoDBConfiguration.USERS_TABLE_NAME);
+		
+		if (indexStr != null) {
+			scanRequest.setIndexName(indexStr);
+		}
 
 		if (query != null) {
 			HashMap<String, Condition> scanFilter = new HashMap<String, Condition>();
@@ -280,9 +305,9 @@ public class DDBUserDAO extends com.ltu.secret.dao.AbstractDao<User> implements 
 	}
 
 	@Override
-	public List<User> scan(String query, int limit, String cursor) {
-		ScanRequest scanRequest = buildScan(query, limit);
-		Map<String, AttributeValue> exclusiveStartKey = buildExclusiveStartKey(cursor);
+	public List<User> scan(String query, int limit, String cursor, String indexStr) {
+		ScanRequest scanRequest = buildScan(query, limit, indexStr);
+		Map<String, AttributeValue> exclusiveStartKey = buildExclusiveStartKey(cursor, indexStr);
 		List<User> users = new ArrayList<User>();
 
 		do {
@@ -306,9 +331,9 @@ public class DDBUserDAO extends com.ltu.secret.dao.AbstractDao<User> implements 
 	}
 
 	@Override
-	public List<User> mapperScan(String query, int limit, String cursor) {
+	public List<User> mapperScan(String query, int limit, String cursor, String indexStr) {
 		DynamoDBScanExpression scanExpression = buildScanMapper(query, limit);
-		Map<String, AttributeValue> exclusiveStartKey = buildExclusiveStartKey(cursor);
+		Map<String, AttributeValue> exclusiveStartKey = buildExclusiveStartKey(cursor, indexStr);
 		if (exclusiveStartKey != null) {
 			scanExpression.setExclusiveStartKey(exclusiveStartKey);
 		}

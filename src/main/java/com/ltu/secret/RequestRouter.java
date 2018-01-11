@@ -69,6 +69,7 @@ public class RequestRouter {
 			action = SecretAction.class.cast(Class.forName(actionClass).newInstance());
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new BadRequestException("Invalid action class");
 		}
 
 		try {
